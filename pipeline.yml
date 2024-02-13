@@ -1,0 +1,24 @@
+resources:
+- name: html
+  type: git
+  source:
+    uri: https://github.com/dharshan473/concourse-html
+jobs:
+- name: deploy-html
+  plan:
+  - get: html
+    trigger: true
+  - task: deploy
+    config:
+      platform: linux
+      image_resource:
+        type: registry-image
+        source: { repository: ubuntu }
+      inputs:
+      - name: html
+      run:
+        path: sh
+        args:
+        - -exc
+        - |
+          cp concourse-html/index.html /var/www/html
