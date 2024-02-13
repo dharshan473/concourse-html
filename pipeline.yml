@@ -2,7 +2,7 @@ resources:
 - name: html
   type: git
   source:
-    uri: https://github.com/dharshan473/concourse-html
+    uri: https://github.com/dharshan473/concourse-html.git
 jobs:
 - name: deploy-html
   plan:
