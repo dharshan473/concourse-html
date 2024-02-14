@@ -10,14 +10,12 @@ jobs:
   plan:
   - get: html-repo
     trigger: true
-  - task: serve-html
+  - task: deploy-html
     config:
       platform: linux
       image_resource:
         type: docker-image
-        source: {repository: nginx, tag: stable}
-      params:
-        PORT: "8000"
+        source: {repository: ubuntu, tag: latest}
       inputs:
       - name: html-repo
       run:
@@ -25,5 +23,7 @@ jobs:
         args:
         - -exc
         - |
-          cp -r html-repo/* /usr/share/nginx/html/
-          nginx -g 'daemon off;'
+          apt update
+          apt install -y net-tools
+          cd html-repo
+          python3 -m http.server 8000
