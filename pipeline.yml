@@ -1,24 +1,27 @@
 resources:
-- name: html
+- name: html-repo
   type: git
   source:
-    uri: https://github.com/dharshan473/concourse-html.git
+    uri: https://github.com/dharshan473/concourse-html
+    branch: main
+
 jobs:
-- name: deploy-html
+- name: serve-html
   plan:
-  - get: html
+  - get: html-repo
     trigger: true
-  - task: deploy
+  - task: serve-html
     config:
       platform: linux
       image_resource:
-        type: registry-image
-        source: { repository: ubuntu }
+        type: docker-image
+        source: {repository: html-server, tag: latest}
       inputs:
-      - name: html
+      - name: html-repo
       run:
         path: sh
         args:
         - -exc
         - |
-          cp concourse-html/index.html /var/www/html
+          cd html-repo
+          python -m SimpleHTTPServer 8080
