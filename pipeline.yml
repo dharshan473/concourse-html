@@ -15,7 +15,7 @@ jobs:
       platform: linux
       image_resource:
         type: docker-image
-        source: {repository: python, tag: 3}
+        source: {repository: ubuntu, tag: latest}
       inputs:
       - name: html-repo
       run:
@@ -27,4 +27,3 @@ jobs:
           apt install -y python3
           cd html-repo
           python3 -m http.server 8000
-
