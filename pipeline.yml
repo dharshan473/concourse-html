@@ -2,7 +2,7 @@ resources:
 - name: html-repo
   type: git
   source:
-    uri: https://github.com/dharshan473/concourse-html
+    uri: https://github.com/dharshan473/concourse-html.git
     branch: main
 
 jobs:
@@ -17,15 +17,18 @@ jobs:
         type: docker-image
         source: {repository: nginx, tag: stable}
       params:
-        PORT: "8000"  # Serve on port 8000
+        PORT: "8000"
       inputs:
       - name: html-repo
-    run:
-      path: sh
-      args:
-      - -exc
-      - |
-        cp -r html-repo/* /usr/share/nginx/html/
-        nginx -g 'daemon off;'
-    ports:
-    - "8000:8000"  # Expose port 8000
+      run:
+        path: sh
+        args:
+        - -exc
+        - |
+          cp -r html-repo/* /usr/share/nginx/html/
+          nginx -g 'daemon off;'
+  ensure:
+    put: html-repo
+    params:
+      repository: html-repo
+      force: true
