@@ -25,10 +25,5 @@ jobs:
         args:
         - -exc
         - |
-          cp -r html-repo/* /usr/share/nginx/html/
+          cp -r html-repo/index.html /usr/share/nginx/html/
           nginx -g 'daemon off;'
-  ensure:
-    put: html-repo
-    params:
-      repository: html-repo
-      force: true
