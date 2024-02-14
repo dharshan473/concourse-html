@@ -1,19 +1,31 @@
-- task: serve-html
-  config:
-    platform: linux
-    image_resource:
-      type: docker-image
-      source: {repository: nginx, tag: stable}
-    params:
-      PORT: "8000"  
-    inputs:
-    - name: html-repo
-  run:
-    path: sh
-    args:
-    - -exc
-    - |
-      cp -r html-repo/* /usr/share/nginx/html/
-      nginx -g 'daemon off;'
-  ports:
-  - "8000:8000"  
+resources:
+- name: html-repo
+  type: git
+  source:
+    uri: https://github.com/dharshan473/concourse-html
+    branch: main
+
+jobs:
+- name: serve-html
+  plan:
+  - get: html-repo
+    trigger: true
+  - task: serve-html
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source: {repository: nginx, tag: stable}
+      params:
+        PORT: "8000"  # Serve on port 8000
+      inputs:
+      - name: html-repo
+    run:
+      path: sh
+      args:
+      - -exc
+      - |
+        cp -r html-repo/* /usr/share/nginx/html/
+        nginx -g 'daemon off;'
+    ports:
+    - "8000:8000"  # Expose port 8000
