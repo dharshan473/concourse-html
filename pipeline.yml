@@ -2,7 +2,7 @@ resources:
 - name: html-repo
   type: git
   source:
-    uri: https://github.com/dharshan473/concourse-html.git
+    uri: https://github.com/dharshan473/concourse-html
     branch: main
 
 jobs:
