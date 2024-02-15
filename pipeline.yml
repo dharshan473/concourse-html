@@ -28,17 +28,20 @@ jobs:
         args:
         - -exc
         - |
-
           ls -la
           pwd
           cd html-repo/
-
           ls -la
           apt-get update -y
           apt-get install nginx -y
-          service nginx start
-          service nginx status
           
-             
+          # Update NGINX configuration to listen on port 8081
+          sed -i 's/80/8081/g' /etc/nginx/nginx.conf
+          
+          service nginx start
+          
+          # Copy HTML files to NGINX root directory
           cp -r index.html /var/www/html
+          
+          # Restart NGINX to apply changes
           service nginx restart
