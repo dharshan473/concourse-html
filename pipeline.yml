@@ -10,12 +10,17 @@ jobs:
   plan:
   - get: html-repo
     trigger: true
-  - task: deploy-html
+    params:
+      depth: 1
+      submodules: none
+      destination: .
+  - task: serve-html
     config:
       platform: linux
       image_resource:
         type: docker-image
         source: {repository: ubuntu, tag: latest}
+      
       inputs:
       - name: html-repo
       run:
@@ -23,7 +28,16 @@ jobs:
         args:
         - -exc
         - |
-          apt update
-          apt install -y python3
+          ls -la
           cd html-repo
-          python3 -m http.server 8000
+
+          ls -la
+          apt-get update -y
+          apt-get install nginx -y
+          service nginx start
+          service nginx status
+          cd /var/www/html
+          ls -la
+          cp -rf index.html /var/www/html
+          
+          service nginx restart
