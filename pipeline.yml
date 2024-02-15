@@ -28,13 +28,17 @@ jobs:
         args:
         - -exc
         - |
+
           ls -la
+          pwd
           cd html-repo/
 
           ls -la
           apt-get update -y
           apt-get install nginx -y
           service nginx start
-          service nginx status       
+          service nginx status
+          
+             
           cp -r index.html /var/www/html
           service nginx restart
