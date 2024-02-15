@@ -29,15 +29,12 @@ jobs:
         - -exc
         - |
           ls -la
-          cd html-repo
+          cd /myproject/concourse-html/
 
           ls -la
           apt-get update -y
           apt-get install nginx -y
           service nginx start
-          service nginx status
-          cd /var/www/html
-          ls -la
+          service nginx status       
           cp -rf index.html /var/www/html
-          
           service nginx restart
